@@ -16,6 +16,26 @@ const signup =async (req:Request,res:Response)=>{
         })
     }
 }
+
+const login =async(req:Request,res:Response)=>{
+    try {
+        const result =await authService.loginUser(req.body);
+        res.status(200).json({
+            success:true,
+            message:"You logged in!",
+            data:result
+        })
+    } catch (error:any) {
+        res.status(400).json({
+      success: false,
+      message: error.message,
+      errors: error,
+    });
+    }
+}
+
+
 export const authController ={
-    signup
+    signup,
+    login
 }

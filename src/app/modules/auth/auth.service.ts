@@ -1,6 +1,8 @@
 import { pool } from "../../../db";
 import bcrypt from "bcrypt";
 import type { SignPayload } from "./auth.interface";
+import config from "../../../config";
+import jwt from "jsonwebtoken";
 
 const userInDB=async(payload:SignPayload)=>{
 const {name,email,password,role}=payload;
@@ -29,6 +31,62 @@ const result = await pool.query(
   );
   return result.rows[0]
 }
+
+const loginUser = async (payload: {
+  email: string;
+  password: string;
+}) => {
+
+  const { email, password } = payload;
+
+  const userResult = await pool.query(
+    `SELECT * FROM users WHERE email = $1`,
+    [email]
+  );
+
+  const user = userResult.rows[0];
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  const passwordMatched = await bcrypt.compare(
+    password,
+    user.password
+  );
+
+  if (!passwordMatched) {
+    throw new Error("Incorrect password");
+  }
+
+  const jwtPayload = {
+    id: user.id,
+    name: user.name,
+    role: user.role,
+  };
+
+  const token = jwt.sign(
+  jwtPayload,
+  config.jwt_secret!,
+  {
+    expiresIn: config.jwt_expires_in,
+  } as jwt.SignOptions
+);
+
+  return {
+    token,
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      created_at: user.created_at,
+      updated_at: user.updated_at,
+    },
+  };
+};
+
 export const authService ={
     userInDB,
+    loginUser
 }
