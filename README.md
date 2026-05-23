@@ -63,7 +63,7 @@ npm install
 PORT=5000
 DATABASE_URL=your_neon_connection_string
 JWT_SECRET=your_secret
-JWT_EXPIRES_IN=7d
+JWT_EXPIRES_IN=1d
 ```
 
 ### 4. Run project
@@ -152,11 +152,3 @@ npm run dev
 * No JOIN used (manual mapping)
 * JWT authentication implemented
 * bcrypt password hashing used
-
-
-📸 architecture diagram
-🚀 deployment guide
-📬 Postman collection button
-🎯 professional README header banner
-
-Just tell me 👍
