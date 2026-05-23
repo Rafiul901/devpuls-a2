@@ -10,5 +10,7 @@ router.post(
   authMiddleware,
   issueController.createIssue
 );
+router.get('/',issueController.getIssues);
+router.get('/:id',issueController.getOneIssue)
 
 export const issueRoutes = router;
