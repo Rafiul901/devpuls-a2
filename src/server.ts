@@ -1,4 +1,4 @@
-import app from "./app";
+import app from "./app.js";
 import config from "./config";
 import { pool } from "./db";
 import { dataDB } from "./db/dataDB";
