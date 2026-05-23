@@ -1,88 +1,162 @@
-DevPulse – Backend API
+#  DevPulse
 
+## 🌐 Live URL
 
-⚡ Features
-User authentication (Signup / Login)
-JWT-based secure authentication
-Role-based access control:
-Contributor
-Maintainer
-Issue management system:
-Create issue (bug / feature request)
-View all issues
-View single issue
-Update issue with permission rules
-Delete issue (maintainer only)
-Filtering & sorting:
-by type (bug / feature_request)
-by status (open / in_progress / resolved)
-sort by newest / oldest
-Secure password hashing using bcrypt
-Clean modular backend architecture
-Raw SQL queries (no ORM)
+[https://your-live-url.com](https://your-live-url.com) *(update after deployment)*
 
-🛠️ Tech Stack
-Node.js (LTS)
-Express.js
-TypeScript
-PostgreSQL (Neon DB)
-pg (native PostgreSQL driver)
-bcrypt
-jsonwebtoken
-dotenv
+---
 
+## ⚡ Features
 
-⚙️ Setup Instructions
-1. Clone project
-git clone <your-repo-url>
+* User authentication (Signup / Login)
+* JWT-based authentication
+* Role-based access control (Contributor / Maintainer)
+* Issue management system:
+
+  * Create issues (bug / feature request)
+  * View all issues
+  * View single issue
+  * Update issues with permissions
+  * Delete issues (maintainer only)
+* Filtering & sorting:
+
+  * Filter by type (bug / feature_request)
+  * Filter by status (open / in_progress / resolved)
+  * Sort by newest / oldest
+* Secure password hashing using bcrypt
+* Modular backend architecture
+* Raw SQL (no ORM used)
+
+---
+
+## 🛠️ Tech Stack
+
+* Node.js (LTS)
+* Express.js
+* TypeScript
+* PostgreSQL (Neon DB)
+* pg (native driver)
+* bcrypt
+* jsonwebtoken
+* dotenv
+
+---
+
+## ⚙️ Setup Instructions
+
+### 1. Clone repository
+
+```bash
+git clone <repo-url>
 cd devpulse
-2. Install dependencies
+```
+
+### 2. Install dependencies
+
+```bash
 npm install
-3. Create .env file
+```
+
+### 3. Create `.env` file
+
+```
 PORT=5000
-DATABASE_URL=your_neon_db_url
-JWT_SECRET=your_secret_key
-JWT_EXPIRES_IN=1d
-4. Run database tables
+DATABASE_URL=your_neon_connection_string
+JWT_SECRET=your_secret
+JWT_EXPIRES_IN=7d
+```
 
-Tables are auto-created on server start OR via init script.
+### 4. Run project
 
-5. Run project
+```bash
 npm run dev
-6. Base URL
-http://localhost:5000/api
+```
 
-📡 API Endpoints
-🔐 Auth Routes
-Signup
-POST /api/auth/signup
-Login
-POST /api/auth/login
- Issues Routes
-Create Issue (Auth required)
-POST /api/issues
-Get All Issues
-GET /api/issues
+---
 
-Query options:
+## 📡 API Endpoints
 
+### 🔐 Auth
+
+* POST `/api/auth/signup`
+* POST `/api/auth/login`
+
+---
+
+### 🐛 Issues
+
+* POST `/api/issues` (Auth required)
+* GET `/api/issues`
+* GET `/api/issues/:id`
+* PATCH `/api/issues/:id` (Auth required)
+* DELETE `/api/issues/:id` (Maintainer only)
+
+---
+
+### Query Options (GET /issues)
+
+```
 ?sort=newest|oldest
 ?type=bug|feature_request
 ?status=open|in_progress|resolved
-Get Single Issue
-GET /api/issues/:id
-Update Issue (Auth required)
-PATCH /api/issues/:id
-Delete Issue (Maintainer only)
-DELETE /api/issues/:id
+```
 
-🗄️ Database Schema Summary
-| Field      | Type             | Description              |
-| ---------- | ---------------- | ------------------------ |
-| id         | SERIAL           | Primary key              |
-| name       | VARCHAR          | User full name           |
-| email      | VARCHAR (unique) | Login email              |
-| password   | TEXT             | Hashed password          |
-| role       | VARCHAR          | contributor / maintainer |
-| created_at | TIMESTAMP        | Auto timestamp           |
-| updated_at | TIMESTAMP        | Auto timestamp           |
+---
+
+## 🗄️ Database Schema
+
+### users
+
+* id (PK)
+* name
+* email (unique)
+* password
+* role (contributor / maintainer)
+* created_at
+* updated_at
+
+---
+
+### issues
+
+* id (PK)
+* title
+* description
+* type
+* status
+* reporter_id
+* created_at
+* updated_at
+
+---
+
+## 🧠 Role Permissions
+
+### Contributor
+
+* Create issues
+* View issues
+* Update own open issues only
+
+### Maintainer
+
+* Full access
+* Delete any issue
+* Update any issue
+
+---
+
+## ✅ Notes
+
+* No ORM used (pure SQL)
+* No JOIN used (manual mapping)
+* JWT authentication implemented
+* bcrypt password hashing used
+
+
+📸 architecture diagram
+🚀 deployment guide
+📬 Postman collection button
+🎯 professional README header banner
+
+Just tell me 👍
