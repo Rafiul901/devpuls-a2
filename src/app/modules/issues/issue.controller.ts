@@ -72,8 +72,61 @@ const getOneIssue = async (
   }
 };
 
+const updateIssue = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const user =
+      (req as any).user;
+
+    const result =
+      await issueInService.updateIssueDB(
+        Number(req.params.id),
+        req.body,
+        user
+      );
+
+    res.status(200).json({
+      success: true,
+      message:
+        "Issue is Updated!",
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+const deleteTheIssue = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    await issueInService.deleteIssueDB(
+      Number(req.params.id)
+    );
+
+    res.status(200).json({
+      success: true,
+      message:
+        "Issue deleted successfully",
+    });
+  } catch (error: any) {
+    res.status(404).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 export const issueController = {
   createIssue,
   getIssues,
-  getOneIssue
+  getOneIssue,
+  updateIssue,
+  deleteTheIssue
 };

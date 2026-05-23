@@ -168,8 +168,110 @@ const singleIssueDB = async (
   };
 };
 
+const updateIssueDB = async (
+  issueId: number,
+  payload: any,
+  user: any
+) => {
+
+  const issueResult =
+    await pool.query(
+      `SELECT * FROM issues WHERE id = $1`,
+      [issueId]
+    );
+
+  const issue =
+    issueResult.rows[0];
+
+  if (!issue) {
+    throw new Error(
+      "Issue not found"
+    );
+  }
+
+  if (user.role === "contributor") {
+
+    if (
+      issue.reporter_id !== user.id
+    ) {
+      throw new Error(
+        "You can update only your own issue"
+      );
+    }
+
+    if (
+      issue.status !== "open"
+    ) {
+      throw new Error(
+        "You cannot update the issues"
+      );
+    }
+  }
+
+  const {
+    title,
+    description,
+    type,
+    status,
+  } = payload;
+
+  const result =
+    await pool.query(
+      `
+      UPDATE issues
+      SET
+      title = COALESCE($1, title),
+      description = COALESCE($2, description),
+      type = COALESCE($3, type),
+      status = COALESCE($4, status),
+      updated_at = CURRENT_TIMESTAMP
+      WHERE id = $5
+      RETURNING *
+      `,
+      [
+        title,
+        description,
+        type,
+        status,
+        issueId,
+      ]
+    );
+
+  return result.rows[0];
+};
+
+const deleteIssueDB = async (
+  issueId: number
+) => {
+ 
+  const issueResult =
+    await pool.query(
+      `SELECT * FROM issues WHERE id = $1`,
+      [issueId]
+    );
+
+  const issue =
+    issueResult.rows[0];
+
+  if (!issue) {
+    throw new Error(
+      "Issue not found"
+    );
+  }
+
+  await pool.query(
+    `
+    DELETE FROM issues
+    WHERE id = $1
+    `,
+    [issueId]
+  );
+};
+
 export const issueInService ={
     issueIntoDB,
     getIssuesDB,
-    singleIssueDB
+    singleIssueDB,
+    updateIssueDB,
+    deleteIssueDB
 }
