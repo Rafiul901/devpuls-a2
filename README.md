@@ -2,7 +2,7 @@
 
 ## 🌐 Live URL
 
-[https://your-live-url.com](https://your-live-url.com) *(update after deployment)*
+(https://devpuls-a2.vercel.app/) 
 
 ---
 
