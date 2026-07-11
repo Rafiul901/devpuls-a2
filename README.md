@@ -83,7 +83,7 @@ npm run dev
 
 ---
 
-### 🐛 Issues
+###  Issues
 
 * POST `/api/issues` (Auth required)
 * GET `/api/issues`
